@@ -14,16 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    uartdialog.cpp \
     win_qextserialport.cpp \
     qextserialbase.cpp \
-    qextserialport.cpp
+    qextserialport.cpp \
+    PortSetting/portsettingdialog.cpp
 
 HEADERS  += mainwindow.h \
-    uartdialog.h \
     win_qextserialport.h \
     qextserialbase.h \
-    qextserialport.h
+    qextserialport.h \
+    PortSetting/portsettingdialog.h
 
 FORMS    += mainwindow.ui \
-    uartdialog.ui
+    PortSetting/portsettingdialog.ui

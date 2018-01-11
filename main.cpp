@@ -1,14 +1,14 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "uartdialog.h"
+#include "./PortSetting/PortSettingDialog.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    UartDialog uartDlg;
+    PortSettingDialog portSettingDlg;
 
-    if (uartDlg.exec() == QDialog::Accepted) {
+    if (portSettingDlg.exec() == QDialog::Accepted) {
         w.show();
 
         return a.exec();

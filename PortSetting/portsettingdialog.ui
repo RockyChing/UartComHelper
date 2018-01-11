@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PortSettingDialog</class>
+ <widget class="QDialog" name="PortSettingDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>439</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>360</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>串口接收数据：</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="uartSendBtn">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>290</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>发送数据</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>151</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>COMSettings</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+  <widget class="QComboBox" name="portNameCombo">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>30</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="baudRateCombo">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>55</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>2400</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>4800</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>9600</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>19200</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>38400</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>57600</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>115200</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>230400</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>380400</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>921600</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PortNum</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>55</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BaudRat</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DParity</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>105</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DataB</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>StopB</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="parityCombo">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>80</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>NONE</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EVEN</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ODD</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="dataBitsCombo">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>105</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>8 bit</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>7 bit</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>6 bit</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>5 bit</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="stopBitsComb">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>130</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>1 bit</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>1.5 bit</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2 bit</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="uartOpenCloseBtn">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>160</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>261</width>
+     <height>431</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>COM data receive</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QTextEdit" name="uartRecvText"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

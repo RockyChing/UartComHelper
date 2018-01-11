@@ -1,21 +1,22 @@
-#include "uartdialog.h"
-#include "ui_uartdialog.h"
+#include "PortSettingDialog.h"
+#include "ui_PortSettingDialog.h"
 #include <QMessageBox>
 #include <QSettings>
 
-UartDialog::UartDialog(QWidget *parent) :
+PortSettingDialog::PortSettingDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::UartDialog)
+    ui(new Ui::PortSettingDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle(tr("串口设置"));
     mIsOpen = false;
     mUartCom = NULL;
 
     setup();
-    uartInit();
+    portInit();
 }
 
-UartDialog::~UartDialog()
+PortSettingDialog::~PortSettingDialog()
 {
     if (mUartCom) {
         mUartCom->close();
@@ -24,10 +25,9 @@ UartDialog::~UartDialog()
     delete ui;
 }
 
-void UartDialog::setup()
+void PortSettingDialog::setup()
 {
-    connect(ui->uartOpenBtn, SIGNAL(clicked()), this, SLOT(onOpenBtnClicked()));
-    connect(ui->uartCloseBtn, SIGNAL(clicked()), this, SLOT(onCloseBtnClicked()));
+    connect(ui->uartOpenCloseBtn, SIGNAL(clicked()), this, SLOT(onOpenCloseBtnClicked()));
     connect(ui->uartSendBtn, SIGNAL(clicked()), this, SLOT(onSendBtnClicked()));
 
     ui->uartRecvText->setReadOnly(true);
@@ -36,7 +36,7 @@ void UartDialog::setup()
 /**
  * Automatic recognition of serial port
  */
-void UartDialog::uartInit()
+void PortSettingDialog::portInit()
 {
     ui->baudRateCombo->setCurrentIndex(6);
 
@@ -60,7 +60,7 @@ void UartDialog::uartInit()
  * @index 索引号
  * @keyValue 选择返回值应该为key还是value
  */
-QString UartDialog::getUartName(int index, QString keyValue)
+QString PortSettingDialog::getUartName(int index, QString keyValue)
 {
     QString result;
     if (::RegOpenKeyEx(HKEY_LOCAL_MACHINE,TEXT("HARDWARE\\DEVICEMAP\\SERIALCOMM"),
@@ -102,52 +102,58 @@ QString UartDialog::getUartName(int index, QString keyValue)
     return result;
 }
 
-void UartDialog::openBtnClicked()
+BaudRateType PortSettingDialog::getBaudRate(quint32 baudrate)
+{
+    BaudRateType br;
+    switch(baudrate) {
+    case 2400:
+        br = BAUD2400;
+        break;
+    case 4800:
+        br = BAUD4800;
+        break;
+    case 9600:
+        br = BAUD9600;
+        break;
+    case 19200:
+        br = BAUD19200;
+        break;
+    case 38400:
+        br = BAUD38400;
+        break;
+    case 57600:
+        br = BAUD57600;
+        break;
+    case 115200:
+        br = BAUD115200;
+        break;
+    case 230400:
+        br = BAUD230400;
+        break;
+    case 380400:
+        br = BAUD380400;
+        break;
+    default:
+        br = BAUD9600;
+        break;
+    }
+
+    return br;
+}
+
+void PortSettingDialog::openCloseBtnHandler()
 {
     if (mIsOpen) {
-        // opened
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("COM already opened!"),
-                             QMessageBox::Yes);
+        closePort();
     } else {
         mUartName = "\\\\.\\" + ui->portNameCombo->currentText();
         int baudRate = ui->baudRateCombo->currentText().toInt();
-        switch(baudRate) {
-        case 2400:
-            mBaudRate = BAUD2400;
-            break;
-        case 4800:
-            mBaudRate = BAUD4800;
-            break;
-        case 9600:
-            mBaudRate = BAUD9600;
-            break;
-        case 19200:
-            mBaudRate = BAUD19200;
-            break;
-        case 38400:
-            mBaudRate = BAUD38400;
-            break;
-        case 57600:
-            mBaudRate = BAUD57600;
-            break;
-        case 115200:
-            mBaudRate = BAUD115200;
-            break;
-        case 230400:
-            mBaudRate = BAUD230400;
-            break;
-        case 380400:
-            mBaudRate = BAUD380400;
-            break;
-        default:
-            break;
-        }
+        mBaudRate = getBaudRate(baudRate);
         openPort();
     }
 }
 
-void UartDialog::openPort()
+void PortSettingDialog::openPort()
 {
     mUartCom = new Win_QextSerialPort(mUartName, QextSerialBase::EventDriven);
     if (mUartCom->open(QIODevice::ReadWrite)) {
@@ -160,38 +166,35 @@ void UartDialog::openPort()
     }
 
     mIsOpen = true;
+    ui->uartOpenCloseBtn->setText(tr("Close"));
     connect(mUartCom, SIGNAL(readyRead()), this, SLOT(onDataRecv()));
 }
 
-void UartDialog::closePort()
+void PortSettingDialog::closePort()
 {
-    if (!mIsOpen) {
-        // opened
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("COM not opened"),
-                             QMessageBox::Yes);
-    } else {
-        mUartCom->close();
-        delete mUartCom;
-        mUartCom = NULL;
-    }
+    ui->uartOpenCloseBtn->setText(tr("Open"));
+    mUartCom->close();
+    delete mUartCom;
+    mUartCom = NULL;
+    mIsOpen = false;
 }
 
-void UartDialog::sendData()
+void PortSettingDialog::sendData()
 {
     qDebug("sendData");
     mUartCom->write("Write", strlen("Write"));
 }
 
-void UartDialog::onDataRecv()
+void PortSettingDialog::onDataRecv()
 {
     qDebug("onDataRecv");
-    if (mUartCom->bytesAvailable() == 0)
+    const qint64 bytesAvailable = mUartCom->bytesAvailable();
+    if (bytesAvailable == 0)
         return;
 
     QByteArray readData = mUartCom->readAll();
-    char  *rxBuffer;
-    rxBuffer = readData.data();
+    char *rxBuffer = readData.data();
+
     QString recvData = QString(QLatin1String(rxBuffer));
     ui->uartRecvText->append(recvData);
 }
@@ -199,23 +202,25 @@ void UartDialog::onDataRecv()
 /**
  * SLOTS
  */
-void UartDialog::onOpenBtnClicked()
+void PortSettingDialog::onOpenCloseBtnClicked()
 {
     qDebug("onOpenBtnClicked");
-    openBtnClicked();
+    openCloseBtnHandler();
 }
 
-void UartDialog::onCloseBtnClicked()
+void PortSettingDialog::onCloseBtnClicked()
 {
     qDebug("onCloseBtnClicked");
     closePort();
+    ui->uartOpenCloseBtn->setText(tr("Open"));
+    connect(ui->uartOpenCloseBtn, SIGNAL(clicked()), this, SLOT(onOpenBtnClicked()));
 }
 
-void UartDialog::onSendBtnClicked()
+void PortSettingDialog::onSendBtnClicked()
 {
     qDebug("onSendBtnClicked");
     if (NULL == mUartCom) {
-        qDebug("port not opened");
+        QMessageBox::warning(this, tr("警告"), tr("port not opened!"));
         return;
     }
     mUartCom->write("Test", 4);

@@ -1,39 +1,41 @@
-#ifndef UARTDIALOG_H
-#define UARTDIALOG_H
+#ifndef ROBOT_CLEANER_DIALOG_H
+#define ROBOT_CLEANER_DIALOG_H
 
 #include <QDialog>
 #include <windows.h>
 #include "win_qextserialport.h"
 
 namespace Ui {
-class UartDialog;
+class PortSettingDialog;
 }
 
-class UartDialog : public QDialog
+class PortSettingDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit UartDialog(QWidget *parent = 0);
-    ~UartDialog();
+    explicit PortSettingDialog(QWidget *parent = 0);
+    ~PortSettingDialog();
 
 private slots:
-    void onOpenBtnClicked();
+    void onOpenCloseBtnClicked();
     void onCloseBtnClicked();
     void onSendBtnClicked();
 
     void onDataRecv();
 private:
     void setup();
-    void uartInit();
+    void portInit();
     QString getUartName(int index, QString keyValue);
+    BaudRateType getBaudRate(quint32 baudrate);
 
-    void openBtnClicked();
+    void openCloseBtnHandler();
     void openPort();
     void closePort();
     void sendData();
+
 private:
-    Ui::UartDialog *ui;
+    Ui::PortSettingDialog *ui;
     Win_QextSerialPort *mUartCom;
 
     /**
@@ -47,12 +49,12 @@ private:
     DWORD mKeySize,mType,mValueSize;
     int mIndex;
 
-
-
-
+    /**
+     * Configuration uart
+     */
     bool mIsOpen;
     QString mUartName;
     BaudRateType mBaudRate;
 };
 
-#endif // UARTDIALOG_H
+#endif // ROBOT_CLEANER_DIALOG_H
