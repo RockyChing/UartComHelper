@@ -1,5 +1,5 @@
-#include "PortSettingDialog.h"
-#include "ui_PortSettingDialog.h"
+#include "portsettingdialog.h"
+#include "ui_portsettingdialog.h"
 #include <QMessageBox>
 #include <QSettings>
 

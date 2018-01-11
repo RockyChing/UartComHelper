@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "./PortSetting/PortSettingDialog.h"
+#include "./PortSetting/portsettingdialog.h"
 
 int main(int argc, char *argv[])
 {
