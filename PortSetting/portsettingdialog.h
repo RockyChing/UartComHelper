@@ -1,5 +1,5 @@
-#ifndef ROBOT_CLEANER_DIALOG_H
-#define ROBOT_CLEANER_DIALOG_H
+#ifndef PORTSETTINGDIALOG_H
+#define PORTSETTINGDIALOG_H
 
 #include <QDialog>
 #include <windows.h>
@@ -57,4 +57,4 @@ private:
     BaudRateType mBaudRate;
 };
 
-#endif // ROBOT_CLEANER_DIALOG_H
+#endif // PORTSETTINGDIALOG_H
