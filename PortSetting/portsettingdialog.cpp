@@ -1,7 +1,9 @@
-#include "portsettingdialog.h"
-#include "ui_portsettingdialog.h"
 #include <QMessageBox>
 #include <QSettings>
+#include <windows.h>
+#include "portsettingdialog.h"
+#include "ui_portsettingdialog.h"
+
 
 PortSettingDialog::PortSettingDialog(QWidget *parent) :
     QDialog(parent),
@@ -10,8 +12,11 @@ PortSettingDialog::PortSettingDialog(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle(tr("串口设置"));
     mIsOpen = false;
+    mIsHexShow = false;
     mUartCom = NULL;
+    mBaudRate = BAUD9600;
 
+    initUI();
     setup();
     portInit();
 }
@@ -25,12 +30,23 @@ PortSettingDialog::~PortSettingDialog()
     delete ui;
 }
 
+void PortSettingDialog::initUI()
+{
+    mOpenCloseBtn = ui->uartOpenCloseBtn;
+    mSendBtn = ui->uartSendBtn;
+    mClearBtn = ui->recvClearBtn;
+    mHexShowBtn = ui->hexShowRadioBtn;
+    mUartRecvText = ui->uartRecvText;
+}
+
 void PortSettingDialog::setup()
 {
-    connect(ui->uartOpenCloseBtn, SIGNAL(clicked()), this, SLOT(onOpenCloseBtnClicked()));
-    connect(ui->uartSendBtn, SIGNAL(clicked()), this, SLOT(onSendBtnClicked()));
+    connect(mOpenCloseBtn, SIGNAL(clicked()), this, SLOT(onOpenCloseBtnClicked()));
+    connect(mSendBtn, SIGNAL(clicked()), this, SLOT(onSendBtnClicked()));
+    connect(mClearBtn, SIGNAL(clicked()), this, SLOT(onClearBtnClicked()));
+    connect(mHexShowBtn, SIGNAL(toggled(bool)), this, SLOT(onHexShowRadioBtnToggled(bool)));
 
-    ui->uartRecvText->setReadOnly(true);
+    mUartRecvText->setReadOnly(true);
 }
 
 /**
@@ -53,6 +69,42 @@ void PortSettingDialog::portInit()
     ui->portNameCombo->addItems(mUartNameList);
     if (num >= 3)
         ui->portNameCombo->setCurrentIndex(2);
+}
+
+void PortSettingDialog::log(const char *msg)
+{
+    QMessageBox::warning(this, tr("错误"), tr(msg));
+}
+
+void PortSettingDialog::updateRecvUI(const char *buff, quint32 length)
+{
+    {
+        char buffer[100] = {'\0'};
+        unsigned int offset = 0l, shift;
+        int i;
+        const unsigned char *ptr = (const unsigned char *) buff;
+        while (offset < length) {
+            int off;
+            off = strlen(buffer);
+            shift = off;
+            snprintf(buffer + off, sizeof(buffer) - off, "%08x: ", offset);
+            off = strlen(buffer);
+            for (i = 0; i < 16; i++) {
+                if (offset + i < length) {
+                    snprintf(buffer + off, sizeof(buffer) - off, "%02x%c", ptr[offset + i], i == 7 ? '-' : ' ');
+                }
+                else{
+                    snprintf(buffer + off, sizeof(buffer) - off, " .%c", i == 7 ? '-' : ' ');
+                }
+                off = strlen(buffer);
+            }
+
+            offset += 16;
+            QString str = QString::fromLocal8Bit((const char *)(buffer + shift), int (off - shift));
+            mUartRecvText->append(str);
+            //qDebug("== %s", buffer + shift);
+        }
+    }
 }
 
 /**
@@ -166,13 +218,13 @@ void PortSettingDialog::openPort()
     }
 
     mIsOpen = true;
-    ui->uartOpenCloseBtn->setText(tr("Close"));
+    mOpenCloseBtn->setText(tr("Close"));
     connect(mUartCom, SIGNAL(readyRead()), this, SLOT(onDataRecv()));
 }
 
 void PortSettingDialog::closePort()
 {
-    ui->uartOpenCloseBtn->setText(tr("Open"));
+    mOpenCloseBtn->setText(tr("Open"));
     mUartCom->close();
     delete mUartCom;
     mUartCom = NULL;
@@ -181,7 +233,10 @@ void PortSettingDialog::closePort()
 
 void PortSettingDialog::sendData()
 {
-    qDebug("sendData");
+    if (mUartCom == NULL) {
+        log("COM not opened!");
+        return;
+    }
     mUartCom->write("Write", strlen("Write"));
 }
 
@@ -193,10 +248,13 @@ void PortSettingDialog::onDataRecv()
         return;
 
     QByteArray readData = mUartCom->readAll();
-    char *rxBuffer = readData.data();
-
-    QString recvData = QString(QLatin1String(rxBuffer));
-    ui->uartRecvText->append(recvData);
+    const char *rxBuffer = readData.data();
+    if (mIsHexShow)
+        updateRecvUI(rxBuffer, (quint32) bytesAvailable);
+    else {
+        QString recvData = QString(QLatin1String(rxBuffer));
+        mUartRecvText->append(recvData);
+    }
 }
 
 /**
@@ -212,8 +270,7 @@ void PortSettingDialog::onCloseBtnClicked()
 {
     qDebug("onCloseBtnClicked");
     closePort();
-    ui->uartOpenCloseBtn->setText(tr("Open"));
-    connect(ui->uartOpenCloseBtn, SIGNAL(clicked()), this, SLOT(onOpenBtnClicked()));
+    mOpenCloseBtn->setText(tr("Open"));
 }
 
 void PortSettingDialog::onSendBtnClicked()
@@ -224,4 +281,16 @@ void PortSettingDialog::onSendBtnClicked()
         return;
     }
     mUartCom->write("Test", 4);
+}
+
+void PortSettingDialog::onClearBtnClicked()
+{
+    qDebug("onClearBtnClicked");
+    mUartRecvText->clear();
+}
+
+void PortSettingDialog::onHexShowRadioBtnToggled(bool checked)
+{
+    qDebug("onHexShowRadioBtnToggled, checked: %d", checked);
+    mIsHexShow = checked;
 }

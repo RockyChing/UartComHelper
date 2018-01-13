@@ -26,19 +26,6 @@
     <string>串口接收数据：</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="uartSendBtn">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>290</y>
-     <width>91</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>发送数据</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -314,6 +301,90 @@
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="recvClearBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>400</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="hexShowRadioBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>380</y>
+     <width>89</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hex</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="uartSendBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>290</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Send</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>360</y>
+     <width>151</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>RECVSettings</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>269</y>
+     <width>151</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>SENDSettings</string>
+   </property>
+  </widget>
+  <zorder>groupBox_4</zorder>
+  <zorder>groupBox_3</zorder>
+  <zorder>label</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>portNameCombo</zorder>
+  <zorder>baudRateCombo</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_6</zorder>
+  <zorder>parityCombo</zorder>
+  <zorder>dataBitsCombo</zorder>
+  <zorder>stopBitsComb</zorder>
+  <zorder>uartOpenCloseBtn</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>recvClearBtn</zorder>
+  <zorder>hexShowRadioBtn</zorder>
+  <zorder>uartSendBtn</zorder>
  </widget>
  <resources/>
  <connections/>
