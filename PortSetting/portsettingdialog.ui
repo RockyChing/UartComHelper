@@ -6,26 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
-    <height>448</height>
+    <width>438</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>630</x>
-     <y>360</y>
-     <width>81</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>串口接收数据：</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -368,7 +355,6 @@
   </widget>
   <zorder>groupBox_4</zorder>
   <zorder>groupBox_3</zorder>
-  <zorder>label</zorder>
   <zorder>groupBox</zorder>
   <zorder>portNameCombo</zorder>
   <zorder>baudRateCombo</zorder>
