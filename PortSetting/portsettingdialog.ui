@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>450</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -286,26 +286,20 @@
     <item row="0" column="0">
      <widget class="QTextEdit" name="uartRecvText"/>
     </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="recvClearBtn">
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
+    </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="recvClearBtn">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>400</y>
-     <width>91</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clear</string>
-   </property>
   </widget>
   <widget class="QRadioButton" name="hexShowRadioBtn">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>380</y>
+     <y>410</y>
      <width>89</width>
      <height>16</height>
     </rect>
@@ -318,7 +312,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>290</y>
+     <y>320</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -331,9 +325,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>360</y>
+     <y>390</y>
      <width>151</width>
-     <height>80</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="title">
@@ -344,7 +338,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>269</y>
+     <y>299</y>
      <width>151</width>
      <height>61</height>
     </rect>
@@ -368,7 +362,6 @@
   <zorder>stopBitsComb</zorder>
   <zorder>uartOpenCloseBtn</zorder>
   <zorder>groupBox_2</zorder>
-  <zorder>recvClearBtn</zorder>
   <zorder>hexShowRadioBtn</zorder>
   <zorder>uartSendBtn</zorder>
  </widget>
