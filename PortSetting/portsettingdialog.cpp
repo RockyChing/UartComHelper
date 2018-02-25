@@ -79,7 +79,7 @@ void PortSettingDialog::log(const char *msg)
 void PortSettingDialog::updateRecvUI(const char *buff, quint32 length)
 {
     {
-        char buffer[100] = {'\0'};
+        char buffer[255] = {'\0'};
         unsigned int offset = 0l, shift;
         int i;
         const unsigned char *ptr = (const unsigned char *) buff;
@@ -242,15 +242,10 @@ void PortSettingDialog::sendData()
 
 void PortSettingDialog::onDataRecv()
 {
-    qDebug("onDataRecv");
-    const qint64 bytesAvailable = mUartCom->bytesAvailable();
-    if (bytesAvailable == 0)
-        return;
-
     QByteArray readData = mUartCom->readAll();
     const char *rxBuffer = readData.data();
     if (mIsHexShow)
-        updateRecvUI(rxBuffer, (quint32) bytesAvailable);
+        updateRecvUI(rxBuffer, (quint32) readData.size());
     else {
         QString recvData = QString(QLatin1String(rxBuffer));
         mUartRecvText->append(recvData);
@@ -276,11 +271,13 @@ void PortSettingDialog::onCloseBtnClicked()
 void PortSettingDialog::onSendBtnClicked()
 {
     qDebug("onSendBtnClicked");
+    static const char *data = "Love is blind and lovers cannot see the pretty follies that themselves commit.";
+    static const qint64 data_len = (qint64) strlen(data);
     if (NULL == mUartCom) {
         QMessageBox::warning(this, tr("警告"), tr("port not opened!"));
         return;
     }
-    mUartCom->write("Test", 4);
+    mUartCom->writeData(data, data_len);
 }
 
 void PortSettingDialog::onClearBtnClicked()
